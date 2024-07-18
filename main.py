@@ -1,5 +1,5 @@
 #uvicorn main:app --reload
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, Header, Response
 from typing import Annotated, Union
 from pydantic import BaseModel
 
@@ -36,3 +36,10 @@ class Item(BaseModel):
 def create_item(item:Item):
   print(f"데이터를 등록합니다: {item.name},{item.price},{item.description}")
   return item
+
+#클라이언트가 HTTP 요청을 보낼 때 포함된 특정 헤더 값을 서버에서 받아서 처리
+@app.get("/sample/")
+def read_sample(response: Response, authorization: Union[str, None] = Header(default=None)):
+    print(authorization)
+    response.headers["custom-header"] = "12345"
+    return {"message": "헤더 정보를 습득했습니다."}

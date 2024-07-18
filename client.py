@@ -20,3 +20,9 @@ postRequest = requests.post("http://127.0.0.1:8000/items/", json={
 
 print(postRequest.status_code)
 print(postRequest.text)
+
+headerRes = requests.get("http://127.0.0.1:8000/sample/", headers={"Authorization": "bearer A1B2C3D4"})
+
+print(headerRes.status_code)
+print(headerRes.text)
+print(headerRes.headers)

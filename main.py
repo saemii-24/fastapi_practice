@@ -1,6 +1,7 @@
 #uvicorn main:app --reload
 from fastapi import FastAPI, Query
-from typing import Annotated
+from typing import Annotated, Union
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -24,3 +25,14 @@ items = ["티셔츠", "스커트", "부츠", "코트"]
 #ge = 이상 / le = 이하 | gt = 초과 / lt = 미만
 def read_items(skip: int = 0, limit: Annotated[int, Query(ge=1, le=10)] = 10):
     return {"items": items[skip:skip + limit]}
+
+
+class Item(BaseModel):
+  name:str
+  price:float
+  description:Union[str,None]=None
+
+@app.post("/items/")
+def create_item(item:Item):
+  print(f"데이터를 등록합니다: {item.name},{item.price},{item.description}")
+  return item

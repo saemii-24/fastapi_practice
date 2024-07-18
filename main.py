@@ -2,6 +2,7 @@
 from fastapi import FastAPI, Query, Header, Response
 from typing import Annotated, Union
 from pydantic import BaseModel
+import asyncio
 
 app = FastAPI()
 
@@ -43,3 +44,9 @@ def read_sample(response: Response, authorization: Union[str, None] = Header(def
     print(authorization)
     response.headers["custom-header"] = "12345"
     return {"message": "헤더 정보를 습득했습니다."}
+  
+#비동기처리
+@app.get("/sleep_time/")
+async def sleep_time(sec:int):
+  await asyncio.sleep(sec)
+  return {"message": f"{sec}초"}
